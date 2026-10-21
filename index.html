@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Concrete Calculator - Estimate Cubic Yards & Bags Needed</title>
+    <meta name="description" content="Use our free online concrete calculator to quickly estimate the exact amount of cubic yards, cubic feet, and bags of concrete needed for slabs, footings, and steps.">
+    <meta name="keywords" content="concrete calculator, cubic yards calculator, concrete bag calculator, slab calculator">
+    <link rel="canonical" href="https://yourdomain.com/">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <span class="text-xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
+                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                BuildCalc<span class="text-indigo-600">Hub</span>
+            </span>
+            <span class="text-xs font-medium bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full">v1.0 Free Tool</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full">
+        
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3">Concrete Calculator</h1>
+            <p class="text-slate-600 max-w-xl mx-auto text-sm md:text-base">Calculate accurate cubic yards, cubic meters, and standard bags of concrete needed for your slabs, footings, or walls instantly.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            
+            <!-- Calculator Form Section -->
+            <div class="md:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <form id="concrete-form" class="space-y-5">
+                    
+                    <!-- Unit Selector -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Unit System</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button type="button" id="btn-imperial" onclick="setUnits('imperial')" class="py-2.5 px-4 text-sm font-medium rounded-xl border border-indigo-600 bg-indigo-600 text-white transition-all shadow-sm">Imperial (feet/inches)</button>
+                            <button type="button" id="btn-metric" onclick="setUnits('metric')" class="py-2.5 px-4 text-sm font-medium rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition-all">Metric (meters/cm)</button>
+                        </div>
+                    </div>
+
+                    <!-- Shape / Type selector (Slab by default) -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Project Shape</label>
+                        <select id="shape" class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="slab">Slab / Floor / Patio</option>
+                        </select>
+                    </div>
+
+                    <!-- Inputs Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label id="label-length" class="block text-xs font-semibold text-slate-600 mb-1">Length (ft)</label>
+                            <input type="number" id="length" step="any" min="0" value="10" class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        </div>
+                        <div>
+                            <label id="label-width" class="block text-xs font-semibold text-slate-600 mb-1">Width (ft)</label>
+                            <input type="number" id="width" step="any" min="0" value="10" class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        </div>
+                        <div>
+                            <label id="label-depth" class="block text-xs font-semibold text-slate-600 mb-1">Thickness / Depth (in)</label>
+                            <input type="number" id="depth" step="any" min="0" value="4" class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        </div>
+                    </div>
+
+                    <!-- Extra Waste Percentage -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-xs font-semibold text-slate-600">Allowance for Waste / Spillage</label>
+                            <span id="waste-val" class="text-xs font-bold text-indigo-600">5%</span>
+                        </div>
+                        <input type="range" id="waste" min="0" max="20" value="5" class="w-full accent-indigo-600 cursor-pointer" oninput="document.getElementById('waste-val').innerText = this.value + '%'">
+                    </div>
+
+                    <!-- Calculate Button -->
+                    <button type="button" onclick="calculateConcrete()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-md shadow-indigo-100">
+                        Calculate Concrete
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div class="md:col-span-5 flex flex-col justify-between">
+                <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-lg flex flex-col justify-between h-full">
+                    <div>
+                        <h2 class="text-lg font-bold border-b border-slate-800 pb-3 mb-4 text-slate-200">Estimated Materials</h2>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <span class="text-xs text-slate-400 block uppercase tracking-wider">Cubic Yards</span>
+                                <span id="res-cu-yards" class="text-3xl font-extrabold text-indigo-400">1.33</span> <span class="text-sm text-slate-400">cu yd</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block uppercase tracking-wider">Cubic Meters</span>
+                                <span id="res-cu-meters" class="text-xl font-bold text-slate-200">1.02</span> <span class="text-xs text-slate-400">cu m</span>
+                            </div>
+                            <div class="pt-3 border-t border-slate-800">
+                                <span class="text-xs text-slate-400 block uppercase tracking-wider">Pre-mixed Bags (80 lb)</span>
+                                <span id="res-bags-80" class="text-2xl font-bold text-white">57</span> <span class="text-sm text-slate-400">bags</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block uppercase tracking-wider">Pre-mixed Bags (60 lb)</span>
+                                <span id="res-bags-60" class="text-xl font-bold text-slate-300">76</span> <span class="text-xs text-slate-400">bags</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-400">
+                        * Includes selected waste margin. Always order slightly extra to avoid shortages on site.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SEO Content Section -->
+        <section class="mt-12 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 prose max-w-none text-slate-700">
+            <h2 class="text-xl font-bold text-slate-900 mb-3">How to Use the Concrete Calculator</h2>
+            <p class="text-sm leading-relaxed mb-4">
+                Whether you are pouring a backyard patio, a sidewalk, or foundation footings, knowing the precise amount of concrete prevents costly over-ordering or frustrating project delays. Our calculator takes your linear measurements and automatically computes the volume required, factoring in a standard 5% spillage safety margin.
+            </p>
+            <h3 class="text-lg font-semibold text-slate-800 mb-2">Standard Concrete Bag Requirements:</h3>
+            <ul class="list-disc pl-5 text-sm space-y-1 mb-4">
+                <li><strong>1 cubic yard</strong> = 27 cubic feet</li>
+                <li><strong>80 lb bag</strong> yields approximately 0.60 cubic feet (approx. 45 bags per cu. yd.)</li>
+                <li><strong>60 lb bag</strong> yields approximately 0.45 cubic feet (approx. 60 bags per cu. yd.)</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+        <p>&copy; 2026 BuildCalcHub. All rights reserved. Free tools for builders and homeowners.</p>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        let currentUnit = 'imperial';
+
+        function setUnits(unit) {
+            currentUnit = unit;
+            const btnImp = document.getElementById('btn-imperial');
+            const btnMet = document.getElementById('btn-metric');
+            const lblLen = document.getElementById('label-length');
+            const lblWid = document.getElementById('label-width');
+            const lblDep = document.getElementById('label-depth');
+
+            if (unit === 'imperial') {
+                btnImp.className = "py-2.5 px-4 text-sm font-medium rounded-xl border border-indigo-600 bg-indigo-600 text-white transition-all shadow-sm";
+                btnMet.className = "py-2.5 px-4 text-sm font-medium rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition-all";
+                lblLen.innerText = "Length (ft)";
+                lblWid.innerText = "Width (ft)";
+                lblDep.innerText = "Thickness / Depth (in)";
+                document.getElementById('length').value = 10;
+                document.getElementById('width').value = 10;
+                document.getElementById('depth').value = 4;
+            } else {
+                btnMet.className = "py-2.5 px-4 text-sm font-medium rounded-xl border border-indigo-600 bg-indigo-600 text-white transition-all shadow-sm";
+                btnImp.className = "py-2.5 px-4 text-sm font-medium rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition-all";
+                lblLen.innerText = "Length (m)";
+                lblWid.innerText = "Width (m)";
+                lblDep.innerText = "Thickness / Depth (cm)";
+                document.getElementById('length').value = 3;
+                document.getElementById('width').value = 3;
+                document.getElementById('depth').value = 10;
+            }
+            calculateConcrete();
+        }
+
+        function calculateConcrete() {
+            let length = parseFloat(document.getElementById('length').value) || 0;
+            let width = parseFloat(document.getElementById('width').value) || 0;
+            let depth = parseFloat(document.getElementById('depth').value) || 0;
+            let wastePercent = parseFloat(document.getElementById('waste').value) || 0;
+
+            let cuYards = 0;
+
+            if (currentUnit === 'imperial') {
+                // length (ft) * width (ft) * [depth (in) / 12] = cubic feet
+                let cuFeet = length * width * (depth / 12);
+                cuYards = cuFeet / 27;
+            } else {
+                // length (m) * width (m) * [depth (cm) / 100] = cubic meters
+                let cuMeters = length * width * (depth / 100);
+                cuYards = cuMeters * 1.30795; // Convert cu meters to cu yards
+            }
+
+            // Apply waste factor
+            cuYards = cuYards * (1 + wastePercent / 100);
+            let cuMetersTotal = cuYards / 1.30795;
+
+            // Bags calculation
+            // 80 lb bag = 0.0222 cu yards (approx 45 bags per yard)
+            // 60 lb bag = 0.0166 cu yards (approx 60 bags per yard)
+            let bags80 = Math.ceil(cuYards * 45);
+            let bags60 = Math.ceil(cuYards * 60);
+
+            // Update DOM
+            document.getElementById('res-cu-yards').innerText = cuYards > 0 ? cuYards.toFixed(2) : "0.00";
+            document.getElementById('res-cu-meters').innerText = cuMetersTotal > 0 ? cuMetersTotal.toFixed(2) : "0.00";
+            document.getElementById('res-bags-80').innerText = cuYards > 0 ? bags80 : "0";
+            document.getElementById('res-bags-60').innerText = cuYards > 0 ? bags60 : "0";
+        }
+
+        // Initial calculation on load
+        window.onload = calculateConcrete;
+    </script>
+</body>
+</html>
